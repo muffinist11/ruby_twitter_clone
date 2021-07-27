@@ -59,12 +59,10 @@ class UsersController < ApplicationController
   end
 
   def login
-    @user = User.find_by(
-      email: params[:email],
-      password: params[:password]
-      )
+    @user = User.find_by(email: params[:email])
 
-    if @user
+    #ハッシュ化されたパスワードを照合する
+    if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
       flash[:notice] = "ログインしました"
       redirect_to("/posts/index")
